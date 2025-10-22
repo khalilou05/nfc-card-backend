@@ -181,3 +181,5 @@ build/
 
 # Turbo output
 .turbo/
+
+.dev.vars

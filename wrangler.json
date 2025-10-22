@@ -2,14 +2,41 @@
   "compatibility_date": "2025-04-01",
   "main": "src/index.ts",
   "name": "nfc-card-backend",
+
   "upload_source_maps": true,
   "d1_databases": [
     {
       "binding": "DB",
-      "database_id": "5c31c5bf-5c60-4455-b9c1-70bd64dc18b3",
+      "database_id": "41b13b5c-e9e5-4c0c-a5ee-185200abee00",
       "database_name": "nfc-card-db"
     }
   ],
+  "r2_buckets": [
+    {
+      "bucket_name": "nfc-card-app",
+      "binding": "BUCKET",
+      "remote": true
+    }
+  ],
+  "ratelimits": [
+    {
+      "name": "RATE_LIMITER",
+      "namespace_id": "1001",
+      "simple": {
+        "limit": 100,
+        "period": 60
+      }
+    },
+    {
+      "name": "LOGIN_RATE_LIMITER",
+      "namespace_id": "1002",
+      "simple": {
+        "limit": 3,
+        "period": 60
+      }
+    }
+  ],
+
   "observability": {
     "enabled": true
   }
