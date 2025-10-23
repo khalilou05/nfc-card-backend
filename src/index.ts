@@ -7,7 +7,6 @@ import { deleteCookie, setCookie } from "hono/cookie";
 const app = new Hono<{ Bindings: Env }>();
 
 app.use(
-  "*",
   cors({
     origin: "https://nfc-card-app.khalilbenmeziane.workers.dev",
     credentials: true,
