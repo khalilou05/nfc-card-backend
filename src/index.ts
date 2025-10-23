@@ -13,7 +13,6 @@ app.use(
   })
 );
 app.use("*", rateLimitMiddleware);
-app.use("/api/*", authMiddleware);
 
 app.post("/login", async (c) => {
   const ip = c.req.header("cf-connecting-ip");
@@ -73,6 +72,8 @@ app.get("/customers/:id", async (c) => {
 });
 
 // ! PROTECTED ROUTES
+
+app.use("/api/*", authMiddleware);
 
 app.post("/api/logout", async (c) => {
   deleteCookie(c, "token", { path: "/dashboard" });
