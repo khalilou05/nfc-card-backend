@@ -183,3 +183,5 @@ build/
 .turbo/
 
 .dev.vars
+
+migrations/

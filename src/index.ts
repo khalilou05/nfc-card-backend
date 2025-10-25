@@ -8,10 +8,11 @@ const app = new Hono<{ Bindings: Env }>();
 
 app.use(
   cors({
-    origin: "https://nfc-card-app.khalilbenmeziane.workers.dev",
+    origin: "http://localhost:3000",
     credentials: true,
   })
 );
+
 app.use("*", rateLimitMiddleware);
 
 app.post("/login", async (c) => {
@@ -86,12 +87,12 @@ app.post("/api/resetpassword", async (c) => {
   }>();
   try {
     const res = await c.env.DB.prepare(
-      "UPDATE users SET email=? password = ? WHERE id=1 "
+      "UPDATE users SET email=?, password = ? WHERE id=1 "
     )
       .bind(email, newpassword)
       .run();
 
-    return c.text("", 200);
+    return c.text("ok", 200);
   } catch (e) {
     console.log(e);
     return c.text("", 500);
@@ -125,7 +126,7 @@ app.post("/api/customers", async (c) => {
   const imgKey: string[] = [];
   try {
     const media = [profileImg, coverImg];
-    const R2uploadPromises = Promise.allSettled(
+    await Promise.allSettled(
       media.map((itm) => {
         const extenstion = itm.name.split(".").pop();
         const url = crypto.randomUUID().replaceAll("-", "") + "." + extenstion;
@@ -135,13 +136,12 @@ app.post("/api/customers", async (c) => {
         });
       })
     );
-    c.executionCtx.waitUntil(R2uploadPromises);
   } catch (error) {
     console.log(error);
   }
 
   const stmnt = await c.env.DB.prepare(
-    "INSERT INTO customers (fullName,email,phoneNumber,socialMedia,profileImg,coverImg) VALUES (?,?,?,?,?,?)"
+    "INSERT INTO customers (fullName,email,phoneNumber,socialMedia,profileImg,coverImg,createdAt) VALUES (?,?,?,?,?,?,datetime('now'))"
   )
     .bind(fullName, email, phoneNumber, socialMedia, imgKey[0], imgKey[1])
     .run();
