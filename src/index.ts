@@ -33,7 +33,6 @@ app.post("/login", async (c) => {
       const token = await sign(
         {
           sub: query.id,
-          role: query.role,
           exp: Math.floor(Date.now() / 1000) + 60 * 60 * 24,
         },
         c.env.JWT_SECRET
