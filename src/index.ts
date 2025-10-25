@@ -25,7 +25,7 @@ app.post("/login", async (c) => {
       password: string;
     }>();
     const query = await c.env.DB.prepare(
-      "SELECT id,email,password from users WHERE email=? AND password=?"
+      "SELECT id,email,password from users WHERE email=?"
     )
       .bind(email, password)
       .first<{ id: number; password: string; email: string; role: string }>();
