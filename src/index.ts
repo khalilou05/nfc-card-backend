@@ -15,7 +15,7 @@ app.use(
 app.use("*", rateLimitMiddleware);
 
 app.post("/login", async (c) => {
-  const ip = c.req.header("cf-connecting-ip");
+  const ip = c.req.header("cf-connecting-ip") || "unkown";
   // @ts-expect-error
   const { success } = await c.env.LOGIN_RATE_LIMITER.limit({ key: ip });
   if (!success) return c.json({ error: "too many requests" }, 429);
@@ -27,7 +27,7 @@ app.post("/login", async (c) => {
     const query = await c.env.DB.prepare(
       "SELECT id,email,password from users WHERE email=?"
     )
-      .bind(email, password)
+      .bind(email)
       .first<{ id: number; password: string; email: string; role: string }>();
     if (query && email === query.email && password === query.password) {
       const token = await sign(
