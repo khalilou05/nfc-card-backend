@@ -44,7 +44,7 @@ app.post("/login", async (c) => {
       });
       return c.text("ok", 200);
     }
-    return c.json({ error: "invalid email or password" });
+    return c.json({ error: "invalid email or password" }, 401);
   } catch (error) {
     console.log(error);
     return c.json({ error: "somthing go wrong" });
