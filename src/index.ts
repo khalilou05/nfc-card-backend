@@ -44,11 +44,11 @@ app.post("/login", async (c) => {
       });
       return c.text("ok", 200);
     }
+    return c.json({ error: "invalid email or password" });
   } catch (error) {
     console.log(error);
     return c.json({ error: "somthing go wrong" });
   }
-  return c.text("Unauthorized", 401);
 });
 
 app.get("logout", async (c) => {
