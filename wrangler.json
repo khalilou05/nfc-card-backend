@@ -7,8 +7,8 @@
   "d1_databases": [
     {
       "binding": "DB",
-      "database_id": "41b13b5c-e9e5-4c0c-a5ee-185200abee00",
-      "database_name": "nfc-card-db"
+      "database_name": "nfc-card-db",
+      "database_id": "253a0970-b1f8-432a-aa02-0ca0f52a6bf3"
     }
   ],
   "r2_buckets": [

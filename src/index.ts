@@ -80,15 +80,16 @@ app.post("/api/logout", async (c) => {
   return c.text("ok", 200);
 });
 app.post("/api/resetpassword", async (c) => {
-  const { confirmpassword, newpassword } = await c.req.json<{
+  const { email, newpassword } = await c.req.json<{
+    email: string;
     newpassword: string;
     confirmpassword: string;
   }>();
   try {
     const res = await c.env.DB.prepare(
-      "UPDATE users SET password = ? WHERE id=1 "
+      "UPDATE users SET email=? password = ? WHERE id=1 "
     )
-      .bind(newpassword)
+      .bind(email, newpassword)
       .run();
 
     return c.text("", 200);
