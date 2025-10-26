@@ -51,6 +51,7 @@ app.post("/login", async (c) => {
         secure: true,
         sameSite: "None",
         httpOnly: true,
+        domain: ".khalilbenmeziane.workers.dev",
       });
       return c.text("ok", 200);
     }
