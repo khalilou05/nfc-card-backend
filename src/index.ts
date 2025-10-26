@@ -123,7 +123,7 @@ app.delete("/api/customers", async (c) => {
     const deleteStmnt = customers.map((cus) =>
       c.env.DB.prepare("DELETE FROM customers WHERE id = ?").bind(cus.id)
     );
-    const deleteBatchRes = await c.env.DB.batch(deleteStmnt);
+    await c.env.DB.batch(deleteStmnt);
 
     await c.env.BUCKET.delete(
       customers.flatMap((cus) => [cus.coverImg, cus.profileImg])
@@ -133,7 +133,7 @@ app.delete("/api/customers", async (c) => {
   } catch (e) {
     console.log(e);
 
-    return c.json({ error: "somthing go wrong" });
+    return c.json({ error: "somthing go wrong" + e });
   }
 });
 
