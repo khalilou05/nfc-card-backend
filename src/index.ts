@@ -63,7 +63,13 @@ app.post("/login", async (c) => {
 });
 
 app.get("logout", async (c) => {
-  deleteCookie(c, "token", { secure: true, httpOnly: true, path: "/" });
+  deleteCookie(c, "token", {
+    secure: true,
+    httpOnly: true,
+    path: "/",
+    sameSite: "None",
+    domain: ".khalilbenmeziane.workers.dev",
+  });
   return c.text("", 200);
 });
 
