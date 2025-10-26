@@ -48,10 +48,6 @@ app.post("/login", async (c) => {
       );
       setCookie(c, "token", token, {
         path: "/",
-        httpOnly: true,
-        secure: true,
-        sameSite: "None",
-        domain: "nfc-card-app.khalilbenmeziane.workers.dev",
       });
       return c.text("ok", 200);
     }
