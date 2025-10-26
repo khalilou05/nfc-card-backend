@@ -7,9 +7,17 @@ import { deleteCookie, setCookie } from "hono/cookie";
 const app = new Hono<{ Bindings: Env }>();
 
 app.use(
+  "*",
   cors({
-    origin: "https://nfc-card-app.khalilbenmeziane.workers.dev",
-    credentials: true,
+    origin: (origin) => {
+      // ✅ Allow your frontend origin
+      if (origin === "http://localhost:3000") return origin;
+      // optionally allow production
+      if (origin === "https://nfc-card-app.khalilbenmeziane.workers.dev")
+        return origin;
+      return ""; // or throw error if you want to restrict others
+    },
+    credentials: true, // ✅ must be true to allow cookies
   })
 );
 
@@ -42,6 +50,7 @@ app.post("/login", async (c) => {
         path: "/",
         httpOnly: true,
         secure: true,
+        sameSite: "None",
       });
       return c.text("ok", 200);
     }
