@@ -117,11 +117,17 @@ app.post("/api/resetpassword", async (c) => {
 
 app.delete("/api/customers", async (c) => {
   try {
-    const usersToDelete = await c.req.json<number[]>();
-    const deleteStmnt = usersToDelete.map((id) =>
-      c.env.DB.prepare("DELETE FROM customers WHERE id = ?").bind(id)
+    const customers = await c.req.json<
+      { id: string; profileImg: string; coverImg: string }[]
+    >();
+    const deleteStmnt = customers.map((cus) =>
+      c.env.DB.prepare("DELETE FROM customers WHERE id = ?").bind(cus.id)
     );
     const deleteBatchRes = await c.env.DB.batch(deleteStmnt);
+
+    await c.env.BUCKET.delete(
+      customers.flatMap((cus) => [cus.coverImg, cus.profileImg])
+    );
 
     return c.text("", 200);
   } catch (e) {
