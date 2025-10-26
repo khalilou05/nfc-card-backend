@@ -118,7 +118,7 @@ app.post("/api/resetpassword", async (c) => {
 app.delete("/api/customers", async (c) => {
   try {
     const customers = await c.req.json<
-      { id: string; profileImg: string; coverImg: string }[]
+      { id: number; profileImg: string; coverImg: string }[]
     >();
     const deleteStmnt = customers.map((cus) =>
       c.env.DB.prepare("DELETE FROM customers WHERE id = ?").bind(cus.id)
