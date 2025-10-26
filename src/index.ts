@@ -48,6 +48,9 @@ app.post("/login", async (c) => {
       );
       setCookie(c, "token", token, {
         path: "/",
+        secure: true,
+        sameSite: "None",
+        httpOnly: true,
       });
       return c.text("ok", 200);
     }
