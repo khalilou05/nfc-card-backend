@@ -51,7 +51,7 @@ app.post("/login", async (c) => {
         secure: true,
         sameSite: "None",
         httpOnly: true,
-        domain: ".khalilbenmeziane.workers.dev",
+        domain: c.env.CORS,
       });
       return c.text("ok", 200);
     }
@@ -173,15 +173,13 @@ app.post("/api/customers", async (c) => {
 app.put("/api/customers", async (c) => {
   const data = await c.req.formData();
 
-  console.log(data);
-
   const newprofileImg = data.get("newprofileImg") as File;
   const newcoverImg = data.get("newcoverImg") as File;
   const coverImgkey = data.get("coverImg");
   const profileImgkey = data.get("profileImg");
   const fullName = data.get("fullName");
   const id = data.get("id");
-  const email = data.get("fullName");
+  const email = data.get("email");
   const phoneNumber = data.get("phoneNumber");
   const socialMedia = data.get("socialMedia");
   try {
