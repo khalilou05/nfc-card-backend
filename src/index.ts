@@ -61,7 +61,7 @@ app.post("/login", async (c) => {
   }
 });
 
-app.get("logout", async (c) => {
+app.get("/logout", async (c) => {
   deleteCookie(c, "token", {
     secure: true,
     httpOnly: true,
