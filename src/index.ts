@@ -176,8 +176,8 @@ app.put("/api/customers", async (c) => {
 
   const newprofileImg = data.get("newprofileImg") as File;
   const newcoverImg = data.get("newcoverImg") as File;
-  const coverImgkey = data.get("coverImg");
-  const profileImgkey = data.get("profileImg");
+  let coverImgkey = data.get("coverImg");
+  let profileImgkey = data.get("profileImg");
   const fullName = data.get("fullName");
   const id = data.get("id");
   const email = data.get("email");
@@ -188,34 +188,38 @@ app.put("/api/customers", async (c) => {
   try {
     if (newcoverImg || newprofileImg) {
       if (newcoverImg) {
+        const newUrl = `${coverImgkey}?v=${Date.now()}`;
+        coverImgkey = newUrl;
         R2updatePromises.push(
-          c.env.BUCKET.put(
-            `${coverImgkey}?v=${Date.now()}` as string,
-            newcoverImg.stream(),
-            {
-              httpMetadata: { contentType: newcoverImg.type },
-            }
-          )
+          c.env.BUCKET.put(newUrl as string, newcoverImg.stream(), {
+            httpMetadata: { contentType: newcoverImg.type },
+          })
         );
       }
       if (newprofileImg) {
+        const newUrl = `${profileImgkey}?v=${Date.now()}`;
+        profileImgkey = newUrl;
         R2updatePromises.push(
-          c.env.BUCKET.put(
-            `${profileImgkey}?v=${Date.now()}` as string,
-            newprofileImg.stream(),
-            {
-              httpMetadata: { contentType: newprofileImg.type },
-            }
-          )
+          c.env.BUCKET.put(newUrl as string, newprofileImg.stream(), {
+            httpMetadata: { contentType: newprofileImg.type },
+          })
         );
       }
       await Promise.allSettled(R2updatePromises);
     }
 
     const stmnt = await c.env.DB.prepare(
-      "UPDATE customers SET fullName = ? ,phoneNumber =?, email=?,socialMedia=? WHERE id = ?"
+      "UPDATE customers SET fullName = ? ,phoneNumber =?, email=?,socialMedia=?, profileImg=?,coverImg=? WHERE id = ?"
     )
-      .bind(fullName, phoneNumber, email, socialMedia, id)
+      .bind(
+        fullName,
+        phoneNumber,
+        email,
+        socialMedia,
+        profileImgkey,
+        coverImgkey,
+        id
+      )
       .run();
 
     return c.text("ok", 201);
