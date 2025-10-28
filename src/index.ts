@@ -13,8 +13,7 @@ app.use(
       // ✅ Allow your frontend origin
       if (origin === "http://localhost:3000") return origin;
       // optionally allow production
-      if (origin === "https://nfc-card-app.khalilbenmeziane.workers.dev")
-        return origin;
+      if (origin === "https://twenty-print.com") return origin;
       return ""; // or throw error if you want to restrict others
     },
     credentials: true, // ✅ must be true to allow cookies
