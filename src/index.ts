@@ -181,23 +181,25 @@ app.put("/api/customers", async (c) => {
   const email = data.get("email");
   const phoneNumber = data.get("phoneNumber");
   const socialMedia = data.get("socialMedia");
+
+  const R2updatePromises = [];
   try {
-    if (newcoverImg && newprofileImg) {
-      const prm1 = c.env.BUCKET.put(
-        coverImgkey as string,
-        newcoverImg.stream(),
-        {
-          httpMetadata: { contentType: newcoverImg.type },
-        }
-      );
-      const prm2 = c.env.BUCKET.put(
-        profileImgkey as string,
-        newprofileImg.stream(),
-        {
-          httpMetadata: { contentType: newprofileImg.type },
-        }
-      );
-      await Promise.allSettled([prm1, prm2]);
+    if (newcoverImg || newprofileImg) {
+      if (newcoverImg) {
+        R2updatePromises.push(
+          c.env.BUCKET.put(coverImgkey as string, newcoverImg.stream(), {
+            httpMetadata: { contentType: newcoverImg.type },
+          })
+        );
+      }
+      if (newprofileImg) {
+        R2updatePromises.push(
+          c.env.BUCKET.put(profileImgkey as string, newprofileImg.stream(), {
+            httpMetadata: { contentType: newprofileImg.type },
+          })
+        );
+      }
+      await Promise.allSettled(R2updatePromises);
     }
 
     const stmnt = await c.env.DB.prepare(
