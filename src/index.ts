@@ -67,7 +67,7 @@ app.get("logout", async (c) => {
     httpOnly: true,
     path: "/",
     sameSite: "None",
-    domain: ".khalilbenmeziane.workers.dev",
+    domain: c.env.CORS,
   });
   return c.text("", 200);
 });
@@ -90,10 +90,6 @@ app.get("/customers/:id", async (c) => {
 
 app.use("/api/*", authMiddleware);
 
-app.post("/api/logout", async (c) => {
-  deleteCookie(c, "token", { path: "/dashboard" });
-  return c.text("ok", 200);
-});
 app.post("/api/resetpassword", async (c) => {
   const { email, newpassword } = await c.req.json<{
     email: string;
