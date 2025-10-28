@@ -172,6 +172,8 @@ app.post("/api/customers", async (c) => {
 app.put("/api/customers", async (c) => {
   const data = await c.req.formData();
 
+  console.log(data);
+
   const newprofileImg = data.get("newprofileImg") as File;
   const newcoverImg = data.get("newcoverImg") as File;
   const coverImgkey = data.get("coverImg");
@@ -187,16 +189,24 @@ app.put("/api/customers", async (c) => {
     if (newcoverImg || newprofileImg) {
       if (newcoverImg) {
         R2updatePromises.push(
-          c.env.BUCKET.put(coverImgkey as string, newcoverImg.stream(), {
-            httpMetadata: { contentType: newcoverImg.type },
-          })
+          c.env.BUCKET.put(
+            `${coverImgkey}?v=${Date.now()}` as string,
+            newcoverImg.stream(),
+            {
+              httpMetadata: { contentType: newcoverImg.type },
+            }
+          )
         );
       }
       if (newprofileImg) {
         R2updatePromises.push(
-          c.env.BUCKET.put(profileImgkey as string, newprofileImg.stream(), {
-            httpMetadata: { contentType: newprofileImg.type },
-          })
+          c.env.BUCKET.put(
+            `${profileImgkey}?v=${Date.now()}` as string,
+            newprofileImg.stream(),
+            {
+              httpMetadata: { contentType: newprofileImg.type },
+            }
+          )
         );
       }
       await Promise.allSettled(R2updatePromises);
@@ -208,7 +218,7 @@ app.put("/api/customers", async (c) => {
       .bind(fullName, phoneNumber, email, socialMedia, id)
       .run();
 
-    return c.json({ userId: stmnt.meta.last_row_id }, 201);
+    return c.text("ok", 201);
   } catch (error) {
     console.log(error);
   }
