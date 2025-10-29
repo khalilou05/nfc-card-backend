@@ -153,17 +153,16 @@ app.post("/api/customers", async (c) => {
         });
       })
     );
+    const stmnt = await c.env.DB.prepare(
+      "INSERT INTO customers (fullName,email,phoneNumber,socialMedia,profileImg,coverImg,createdAt) VALUES (?,?,?,?,?,?,datetime('now'))"
+    )
+      .bind(fullName, email, phoneNumber, socialMedia, imgKey[0], imgKey[1])
+      .run();
+
+    return c.text("ok", 201);
   } catch (error) {
-    console.log(error);
+    return c.json({ error: error }, 500);
   }
-
-  const stmnt = await c.env.DB.prepare(
-    "INSERT INTO customers (fullName,email,phoneNumber,socialMedia,profileImg,coverImg,createdAt) VALUES (?,?,?,?,?,?,datetime('now'))"
-  )
-    .bind(fullName, email, phoneNumber, socialMedia, imgKey[0], imgKey[1])
-    .run();
-
-  return c.json({ userId: stmnt.meta.last_row_id }, 201);
 });
 app.put("/api/customers", async (c) => {
   const data = await c.req.formData();

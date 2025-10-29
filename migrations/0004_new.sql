@@ -8,12 +8,14 @@ CREATE TABLE "users"(
 );
 
 CREATE TABLE customers(
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     fullName TEXT,
+    email TEXT,
     phoneNumber TEXT,
     profileImg TEXT,
     coverImg TEXT,
-    socialMedia TEXT
+    socialMedia TEXT,
+    createdAt TEXT
 );
 
 INSERT INTO users (email,password) VALUES ('admin@gmail.com','admin');

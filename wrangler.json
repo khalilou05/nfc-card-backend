@@ -2,9 +2,7 @@
   "compatibility_date": "2025-04-01",
   "main": "src/index.ts",
   "name": "nfc-card-backend",
-
   "upload_source_maps": true,
-
   "vars": {
     "CORS": ".twenty-print.com"
   },
@@ -47,12 +45,11 @@
       ]
     }
   },
-
   "d1_databases": [
     {
       "binding": "DB",
       "database_name": "nfc-card-db",
-      "database_id": "253a0970-b1f8-432a-aa02-0ca0f52a6bf3"
+      "database_id": "4fa1af64-5f99-48ca-8cc9-cdd1b3fe5fab"
     }
   ],
   "r2_buckets": [
@@ -80,7 +77,6 @@
       }
     }
   ],
-
   "observability": {
     "enabled": true
   }
