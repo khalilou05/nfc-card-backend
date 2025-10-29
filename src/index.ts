@@ -184,7 +184,10 @@ app.put("/api/customers", async (c) => {
   try {
     if (newcoverImg || newprofileImg) {
       if (newcoverImg) {
-        const newUrl = `${coverImgkey}?v=${Date.now()}`;
+        const newUrl =
+          crypto.randomUUID().replaceAll("-", "") +
+          "." +
+          newcoverImg.name.split(".").pop();
         coverImgkey = newUrl;
         R2updatePromises.push(
           c.env.BUCKET.put(newUrl as string, newcoverImg.stream(), {
@@ -193,7 +196,10 @@ app.put("/api/customers", async (c) => {
         );
       }
       if (newprofileImg) {
-        const newUrl = `${profileImgkey}?v=${Date.now()}`;
+        const newUrl =
+          crypto.randomUUID().replaceAll("-", "") +
+          "." +
+          newprofileImg.name.split(".").pop();
         profileImgkey = newUrl;
         R2updatePromises.push(
           c.env.BUCKET.put(newUrl as string, newprofileImg.stream(), {
