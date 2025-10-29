@@ -159,7 +159,7 @@ app.post("/api/customers", async (c) => {
       .bind(fullName, email, phoneNumber, socialMedia, imgKey[0], imgKey[1])
       .run();
 
-    return c.text("ok", 201);
+    return c.json({ userId: stmnt.meta.last_row_id }, 201);
   } catch (error) {
     return c.json({ error: error }, 500);
   }
