@@ -189,12 +189,12 @@ app.put("/api/customers", async (c) => {
           "." +
           newcoverImg.name.split(".").pop();
 
-        R2updatePromises.push([
+        R2updatePromises.push(
           c.env.BUCKET.put(newUrl as string, newcoverImg.stream(), {
             httpMetadata: { contentType: newcoverImg.type },
           }),
-          c.env.BUCKET.delete(coverImgkey as string),
-        ]);
+          c.env.BUCKET.delete(coverImgkey as string)
+        );
         coverImgkey = newUrl;
       }
       if (newprofileImg) {
@@ -202,12 +202,12 @@ app.put("/api/customers", async (c) => {
           crypto.randomUUID().replaceAll("-", "") +
           "." +
           newprofileImg.name.split(".").pop();
-        R2updatePromises.push([
+        R2updatePromises.push(
           c.env.BUCKET.put(newUrl as string, newprofileImg.stream(), {
             httpMetadata: { contentType: newprofileImg.type },
           }),
-          c.env.BUCKET.delete(profileImgkey as string),
-        ]);
+          c.env.BUCKET.delete(profileImgkey as string)
+        );
         profileImgkey = newUrl;
       }
       await Promise.allSettled(R2updatePromises);
